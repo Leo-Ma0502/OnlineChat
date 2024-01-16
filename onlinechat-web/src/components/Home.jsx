@@ -10,22 +10,22 @@ export default function Home() {
   if (token) {
     return (
       <>
-        <div>Home</div>
-        <div>User: {username}</div>
-        <Chat></Chat>
+        <strong>Loggedin as: {username}</strong>
+        <br />
         <button
+          style={{ backgroundColor: "rgba(50, 100, 200, 0.6)" }}
           onClick={() => {
             logout();
           }}
         >
           Log out
         </button>
+        <Chat></Chat>
       </>
     );
   } else {
     return (
       <>
-        <div>Home</div>
         <Link to={`/auth/login`}>Login to start chatting</Link>
         <br></br>
         <Link to={`/auth/register`}>Register</Link>

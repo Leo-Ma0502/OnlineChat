@@ -28,35 +28,55 @@ export default function Authentication() {
     <>
       {authChoice == "login" ? (
         <>
-          <div>login</div>
+          <strong>login</strong>
+          <br />
           <a href="/auth/register">New here? Create a new account!</a>
         </>
       ) : authChoice == "register" ? (
         <>
-          <div>Register</div>
+          <strong>Register</strong>
+          <br />
           <a href="/auth/login">Already have an account? Login!</a>
         </>
       ) : (
         "Nothing"
       )}
       <form onSubmit={handleSubmission}>
-        <label>Username</label>
-        <input
-          required
-          type="text"
-          value={uname}
-          onChange={(e) => setUname(e.target.value)}
-        ></input>
-
-        <label>Password</label>
-        <input
-          required
-          type="text"
-          value={pwd}
-          onChange={(e) => setPwd(e.target.value)}
-        ></input>
-
-        <button type="submit">
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            marginBottom: "10px",
+          }}
+        >
+          <label style={{ marginRight: "10px" }}>Username</label>
+          <input
+            required
+            type="text"
+            value={uname}
+            style={{ flexGrow: 1, width: "70%" }}
+            onChange={(e) => setUname(e.target.value)}
+          ></input>
+        </div>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            marginBottom: "10px",
+          }}
+        >
+          <label style={{ marginRight: "10px" }}>Password</label>
+          <input
+            required
+            type="text"
+            value={pwd}
+            style={{ flexGrow: 1, width: "70%" }}
+            onChange={(e) => setPwd(e.target.value)}
+          ></input>
+        </div>
+        <button type="submit" style={{ width: "100%" }}>
           {authChoice == "login"
             ? "Login"
             : authChoice == "register"

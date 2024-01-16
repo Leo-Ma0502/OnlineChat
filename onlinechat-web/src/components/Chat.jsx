@@ -4,13 +4,12 @@ import { getUserlist } from "../service/api";
 
 export default function Chat() {
   const { username, socketClient, messagePool } = useContext(AppContext);
-  // all users existing in the system
   const [users, setUsers] = useState([]);
-  // all messages
   const [messages, setMessages] = useState(JSON.parse(messagePool));
+  const [userSelected, setUserSelected] = useState(null);
+  const [msg, setMsg] = useState("");
 
   useEffect(() => {
-    // Fetch user list and update state
     const fetchUserList = async () => {
       try {
         const res = await getUserlist();
@@ -33,12 +32,6 @@ export default function Chat() {
     localStorage.setItem("msgs", JSON.stringify(messages));
   }, [messages, socketClient, username]);
 
-  // select user to send message
-  const [userSelected, setUserSelected] = useState(null);
-
-  // message
-  const [msg, setMsg] = useState("");
-  // send message
   const handleSubmit = (e) => {
     e.preventDefault();
     if (userSelected) {
@@ -59,73 +52,178 @@ export default function Chat() {
         }
       }, 1000);
     } else {
-      alert("no user selected!");
+      alert("No user selected!");
     }
   };
 
+  const chatStyle = {
+    container: {
+      display: "flex",
+      flexDirection: "row",
+      justifyContent: "start",
+      alignItems: "flex-start",
+      margin: "20px",
+      fontFamily: "'Arial', sans-serif",
+      color: "#333",
+      height: "100vh",
+    },
+    userList: {
+      flex: 1,
+      border: "1px solid #ccc",
+      padding: "10px",
+      overflowY: "scroll",
+      height: "80%",
+      width: "100vw",
+      marginRight: "20px",
+      backgroundColor: "rgba(240, 240, 240, 0.8)",
+      textAlign: "left",
+    },
+    chatArea: {
+      flex: 2,
+      display: "flex",
+      flexDirection: "column",
+      justifyContent: "space-between",
+      height: "82.5%",
+      width: "100vw",
+      backgroundColor: "rgba(255, 255, 255, 0.8)",
+    },
+    messageHistory: {
+      border: "1px solid #ccc",
+      padding: "10px",
+      overflowY: "scroll",
+      flexGrow: "1",
+    },
+    form: {
+      display: "flex",
+      marginTop: "10px",
+    },
+    input: {
+      flexGrow: "1",
+      padding: "10px",
+      margin: "0 10px 0 0",
+      borderRadius: "5px",
+      border: "1px solid #ccc",
+    },
+    button: {
+      padding: "10px 20px",
+      borderRadius: "5px",
+      border: "none",
+      backgroundColor: "#1a1a1a",
+      color: "white",
+      cursor: "pointer",
+    },
+    message: {
+      padding: "5px",
+      margin: "5px 0",
+      borderRadius: "5px",
+      backgroundColor: "#f2f2f2",
+      wordWrap: "break-word",
+      whiteSpace: "pre-line",
+    },
+    sentMessage: {
+      textAlign: "right",
+      backgroundColor: "#d1f2eb",
+    },
+    receivedMessage: {
+      textAlign: "left",
+      backgroundColor: "#f2d1d1",
+    },
+    userButton: {
+      display: "block",
+      width: "100%",
+      padding: "10px",
+      margin: "5px 0",
+      backgroundColor: "rgba(50, 50, 200, 0.6)",
+      color: "white",
+      textAlign: "left",
+      border: "none",
+      borderRadius: "5px",
+      cursor: "pointer",
+    },
+    selectedButton: {
+      backgroundColor: "#4a90e2",
+      color: "white",
+      margin: "5px 0",
+    },
+  };
+
   return (
-    <>
-      {/* user list */}
-      <div id="userlist">
-        {users.length != 0 ? (
-          <ul>
+    <div style={chatStyle.container}>
+      <div id="userlist" style={chatStyle.userList}>
+        <strong>Select a user to send message</strong>
+        {users.length !== 0 ? (
+          <ul style={{ listStyle: "none", padding: 0 }}>
             {users
-              .filter((i) => {
-                return i.username != username;
-              })
+              .filter((i) => i.username !== username)
               .map((i, index) => (
-                <button
-                  key={index}
-                  onClick={() => setUserSelected(i.username)}
-                  onDoubleClick={() => setUserSelected(null)}
-                  style={
-                    i.username == userSelected
-                      ? { backgroundColor: "black", color: "white" }
-                      : {}
-                  }
-                >
-                  {i.username}
-                </button>
+                <li key={index}>
+                  <button
+                    onClick={() => setUserSelected(i.username)}
+                    onDoubleClick={() => setUserSelected(null)}
+                    style={
+                      i.username === userSelected
+                        ? {
+                            ...chatStyle.userButton,
+                            ...chatStyle.selectedButton,
+                          }
+                        : chatStyle.userButton
+                    }
+                  >
+                    {i.username}
+                  </button>
+                </li>
               ))}
           </ul>
         ) : (
-          "no users yet"
+          "No users yet"
         )}
       </div>
-
-      {userSelected ? (
-        <>
-          {/* message history*/}
-          <div>
-            <>Messages</>
-            {messages?.length != 0 ? (
-              Array.from(messages)
-                .filter((i) => {
-                  return (
-                    (i.from == username && i.to == userSelected) ||
-                    (i.from == userSelected && i.to == username)
-                  );
-                })
-                .map((msg, index) => {
-                  return <p key={index}>{`${msg?.from}: ${msg?.body}`}</p>;
-                })
-            ) : (
-              <p>No messages yet</p>
-            )}
-          </div>
-          {/* send message */}
-          <form onSubmit={handleSubmit}>
-            <input
-              required
-              value={msg}
-              onChange={(e) => setMsg(e.target.value)}
-            ></input>
-            <button type="submit">Send</button>
-          </form>
-        </>
-      ) : (
-        <></>
-      )}
-    </>
+      <div style={chatStyle.chatArea}>
+        {userSelected && (
+          <>
+            <div style={chatStyle.messageHistory}>
+              <strong>Messages with {userSelected}</strong>
+              {messages?.length !== 0 ? (
+                messages
+                  .filter(
+                    (i) =>
+                      (i.from === username && i.to === userSelected) ||
+                      (i.from === userSelected && i.to === username)
+                  )
+                  .map((msg, index) => (
+                    <p
+                      key={index}
+                      style={
+                        msg.from === username
+                          ? { ...chatStyle.message, ...chatStyle.sentMessage }
+                          : {
+                              ...chatStyle.message,
+                              ...chatStyle.receivedMessage,
+                            }
+                      }
+                    >
+                      <strong>{msg?.from}</strong>:<br />
+                      {msg?.body}
+                    </p>
+                  ))
+              ) : (
+                <p>No messages yet</p>
+              )}
+            </div>
+            <form onSubmit={handleSubmit} style={chatStyle.form}>
+              <input
+                required
+                value={msg}
+                onChange={(e) => setMsg(e.target.value)}
+                style={chatStyle.input}
+              />
+              <button type="submit" style={chatStyle.button}>
+                Send
+              </button>
+            </form>
+          </>
+        )}
+      </div>
+    </div>
   );
 }
