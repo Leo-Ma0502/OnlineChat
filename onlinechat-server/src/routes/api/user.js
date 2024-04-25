@@ -5,6 +5,10 @@ import auth from "../../authentication/auth.js";
 
 const router = express.Router();
 
+router.get("/", async (req, res) => {
+  res.status(200).send("Hello");
+});
+
 // register
 /**
  * Acknowledgement:
