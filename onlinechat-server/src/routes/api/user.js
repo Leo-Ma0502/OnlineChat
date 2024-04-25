@@ -58,15 +58,12 @@ router.post("/login", async (req, res) => {
 
 // get all users
 router.post("/userlist", auth, async (req, res) => {
-  User.find({}, (err, users) => {
-    var userMap = [];
-
-    users.forEach((user) => {
-      userMap.push(user);
-    });
-
-    res.status(201).send(userMap);
-  });
+  try {
+    const users = await User.find({});
+    return res.status(201).json(users);
+  } catch {
+    return res.status(500).json({ error: "Internal Server Error" });
+  }
 });
 
 export default router;

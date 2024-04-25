@@ -91,4 +91,41 @@ describe("Auth Routes", () => {
       expect(res.body).toEqual("123");
     });
   });
+
+  describe("POST /api/user/userlist", () => {
+    it("should return all users when authenticated", async () => {
+      // Mock the auth middleware to always call next()
+      auth.mockImplementation((req, res, next) => next());
+
+      // Mock User.find to simulate database call
+      User.find = jest.fn().mockResolvedValue([
+        { username: "user1", _id: "1" },
+        { username: "user2", _id: "2" },
+      ]);
+
+      const response = await request(app).post("/api/user/userlist");
+
+      expect(response.status).toBe(201);
+      expect(response.body).toEqual([
+        { username: "user1", _id: "1" },
+        { username: "user2", _id: "2" },
+      ]);
+      expect(User.find).toHaveBeenCalled();
+    });
+
+    it("should handle errors from the database", async () => {
+      // Mocking auth to always proceed to next middleware
+      auth.mockImplementation((req, res, next) => next());
+
+      // Simulating a database error
+      User.find.mockImplementationOnce((callback) =>
+        callback(new Error("Database error"), null)
+      );
+
+      const res = await request(app).post("/api/user/userlist");
+
+      expect(res.status).toBe(500);
+      expect(res.body).toEqual({ error: "Internal Server Error" });
+    });
+  });
 });
