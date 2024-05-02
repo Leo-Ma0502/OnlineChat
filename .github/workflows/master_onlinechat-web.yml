@@ -19,35 +19,38 @@ jobs:
       - name: Set up Node.js version
         uses: actions/setup-node@v3
         with:
-          node-version: '20.x'
+          node-version: "20.x"
 
       - name: npm install, build, and test
         run: |
+          cd onlinechat-web
           npm install
           npm run build --if-present
           npm run test --if-present
-      
+        env:
+          VITE_BASE: ${{ secrets. VITE_BASE}}
+
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v3
         with:
           name: node-app
-          path: .
+          path: onlinechat-web/dist
 
   deploy:
     runs-on: ubuntu-latest
     needs: build
     environment:
-      name: 'Production'
+      name: "Production"
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
     permissions:
-      id-token: write #This is required for requesting the JWT
+      id-token: write
 
     steps:
       - name: Download artifact from build job
         uses: actions/download-artifact@v3
         with:
           name: node-app
-      
+
       - name: Login to Azure
         uses: azure/login@v1
         with:
@@ -55,11 +58,10 @@ jobs:
           tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_2A7758A7D68E4B57BE5EC50170EC8016 }}
           subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_3D7C9030E6574DE19CA357799B8B624A }}
 
-      - name: 'Deploy to Azure Web App'
+      - name: "Deploy to Azure Web App"
         uses: azure/webapps-deploy@v2
         id: deploy-to-webapp
         with:
-          app-name: 'OnlineChat-web'
-          slot-name: 'Production'
+          app-name: "OnlineChat-web"
+          slot-name: "Production"
           package: .
-          
