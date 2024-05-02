@@ -1,7 +1,7 @@
 import "./App.css";
 import { Route, Routes } from "react-router-dom";
 
-import Authentication from "./components/authentication";
+import Authentication from "./components/Authentication";
 import Home from "./components/Home";
 
 function App() {
