@@ -28,7 +28,7 @@ jobs:
           npm run build --if-present
           npm run test --if-present
         env:
-          VITE_BASE: ${{ secrets. VITE_BASE}}
+          VITE_BASE: ${{ secrets.VITE_BASE}}
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v3
