@@ -6,6 +6,7 @@
 
 .introduction-container div {
   display: flex;
+  justify-content: center;
 }
 
 .introduction-container div Button {
@@ -18,6 +19,7 @@
   margin-right: 10vw;
   border-radius: 5px;
   cursor: pointer;
+  color: #fcf9f9;
   background-color: rgba(126, 21, 224, 0.872);
   font-weight: bold;
 }
@@ -105,8 +107,12 @@
   }
 
   .introduction-container div Button {
-    width: 80vw;
+    min-width: 200px;
     margin-bottom: 5vh;
+  }
+
+  .introduction-container div Button:hover {
+    transform: none;
   }
 
   .auth-container {
