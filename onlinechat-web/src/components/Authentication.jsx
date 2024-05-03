@@ -42,41 +42,26 @@ export default function Authentication() {
         "Nothing"
       )}
       <form onSubmit={handleSubmission}>
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            marginBottom: "10px",
-          }}
-        >
-          <label style={{ marginRight: "10px" }}>Username</label>
+        <div className="auth-form">
+          <label>Username</label>
           <input
             required
             type="text"
             value={uname}
-            style={{ flexGrow: 1, width: "70%" }}
             onChange={(e) => setUname(e.target.value)}
           ></input>
         </div>
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            marginBottom: "10px",
-          }}
-        >
-          <label style={{ marginRight: "10px" }}>Password</label>
+        <div className="auth-form">
+          <label>Password</label>
           <input
             required
             type="text"
             value={pwd}
-            style={{ flexGrow: 1, width: "70%" }}
+            className="auth-input"
             onChange={(e) => setPwd(e.target.value)}
           ></input>
         </div>
-        <button type="submit" style={{ width: "100%" }}>
+        <button type="submit">
           {authChoice == "login"
             ? "Login"
             : authChoice == "register"
