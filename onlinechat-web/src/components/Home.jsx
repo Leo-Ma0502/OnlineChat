@@ -9,11 +9,10 @@ export default function Home() {
 
   if (token) {
     return (
-      <>
+      <div className="chat-container">
         <strong>Loggedin as: {username}</strong>
         <br />
         <button
-          style={{ backgroundColor: "rgba(50, 100, 200, 0.6)" }}
           onClick={() => {
             logout();
           }}
@@ -21,15 +20,17 @@ export default function Home() {
           Log out
         </button>
         <Chat></Chat>
-      </>
+      </div>
     );
   } else {
     return (
-      <>
-        <Link to={`/auth/login`}>Login to start chatting</Link>
-        <br></br>
-        <Link to={`/auth/register`}>Register</Link>
-      </>
+      <div className="introduction-container">
+        <div>
+          <Link to={`/auth/login`}>Login to start chatting</Link>
+          <br></br>
+          <Link to={`/auth/register`}>Register</Link>
+        </div>
+      </div>
     );
   }
 }

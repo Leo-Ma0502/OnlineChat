@@ -41,8 +41,8 @@ export default function Authentication() {
       ) : (
         "Nothing"
       )}
-      <form onSubmit={handleSubmission}>
-        <div className="auth-form">
+      <form className="auth-form-container" onSubmit={handleSubmission}>
+        <div className="auth-form-item">
           <label>Username</label>
           <input
             required
@@ -51,7 +51,7 @@ export default function Authentication() {
             onChange={(e) => setUname(e.target.value)}
           ></input>
         </div>
-        <div className="auth-form">
+        <div className="auth-form-item">
           <label>Password</label>
           <input
             required
