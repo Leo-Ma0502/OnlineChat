@@ -16,32 +16,53 @@
   background-color: rgba(50, 100, 200, 0.6)
 }
 
-.auth-form-container {
+.auth-container {
   display: flex;
   flex-direction: column;
+  justify-content: space-evenly;
+  margin: auto;
+  padding: 20px;
+  min-width: 50%;
+  height: 50%;
+  background-color: rgba(255, 255, 255, 0.769);
+  border-radius: 10px;
+}
+
+.auth-container strong {
+  font-size: x-large;
+}
+
+.auth-form-container {
+  height: 50%;
+  display: grid;
+  place-items: center;
+}
+
+.auth-form-input {
+  height: 50%;
+  width: 80%;
+  text-align: center;
+  border-radius: 5px;
+  border: 1px solid #ccc;
 }
 
 .auth-form-container button {
-  width: 50%;
-  margin: auto;
+  height: 50%;
+  width: 80%;
+  text-align: center;
+  border-radius: 5px;
+  background-color: rgba(126, 21, 224, 0.872);
+  color: #fcf9f9;
+  font-weight: bold;
+  border: none;
 }
 
-.auth-form-item {
-  margin: auto;
-  width: 50%;
-  display: flex;
-  flex: 1;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 10px
-}
-
-.auth-form-item input {
-  max-width: 60%;
+.auth-form-container button:hover {
+  background-color: #360765e4;
 }
 
 @media screen and (max-width: 768px) {
-  .auth-form-item {
-    flex-direction: column;
+  .auth-container {
+    max-width: 95%
   }
 }

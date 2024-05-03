@@ -25,42 +25,37 @@ export default function Authentication() {
   }
 
   return (
-    <>
+    <div className="auth-container">
       {authChoice == "login" ? (
         <>
-          <strong>login</strong>
-          <br />
+          <strong>Login</strong>
           <a href="/auth/register">New here? Create a new account!</a>
         </>
       ) : authChoice == "register" ? (
         <>
           <strong>Register</strong>
-          <br />
           <a href="/auth/login">Already have an account? Login!</a>
         </>
       ) : (
         "Nothing"
       )}
       <form className="auth-form-container" onSubmit={handleSubmission}>
-        <div className="auth-form-item">
-          <label>Username</label>
-          <input
-            required
-            type="text"
-            value={uname}
-            onChange={(e) => setUname(e.target.value)}
-          ></input>
-        </div>
-        <div className="auth-form-item">
-          <label>Password</label>
-          <input
-            required
-            type="text"
-            value={pwd}
-            className="auth-input"
-            onChange={(e) => setPwd(e.target.value)}
-          ></input>
-        </div>
+        <input
+          className="auth-form-input"
+          placeholder="Username"
+          required
+          type="text"
+          value={uname}
+          onChange={(e) => setUname(e.target.value)}
+        ></input>
+        <input
+          className="auth-form-input"
+          placeholder="Password"
+          required
+          type="password"
+          value={pwd}
+          onChange={(e) => setPwd(e.target.value)}
+        ></input>
         <button type="submit">
           {authChoice == "login"
             ? "Login"
@@ -69,6 +64,6 @@ export default function Authentication() {
             : "Nothing"}
         </button>
       </form>
-    </>
+    </div>
   );
 }
