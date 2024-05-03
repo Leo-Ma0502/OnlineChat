@@ -16,7 +16,8 @@
   border: none;
   height: 20vh;
   margin: auto;
-  margin-right: 10vw;
+  margin-right: 5vw;
+  margin-left: 5vw;
   border-radius: 5px;
   cursor: pointer;
   color: #fcf9f9;
