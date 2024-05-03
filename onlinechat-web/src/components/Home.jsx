@@ -28,9 +28,12 @@ export default function Home() {
     return (
       <div className="introduction-container">
         <div>
-          <Link to={`/auth/login`}>Login to start chatting</Link>
-          <br></br>
-          <Link to={`/auth/register`}>Register</Link>
+          <Link to={`/auth/login`}>
+            <button>Login to start chatting</button>
+          </Link>
+          <Link to={`/auth/register`}>
+            <button> Register</button>
+          </Link>
         </div>
       </div>
     );

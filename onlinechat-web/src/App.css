@@ -4,6 +4,28 @@
   place-items: center;
 }
 
+.introduction-container div {
+  display: flex;
+}
+
+.introduction-container div Button {
+  transition: transform 0.3s ease-in-out;
+  width: 20vw;
+  padding: 5px;
+  border: none;
+  height: 20vh;
+  margin: auto;
+  margin-right: 10vw;
+  border-radius: 5px;
+  cursor: pointer;
+  background-color: rgba(126, 21, 224, 0.872);
+  font-weight: bold;
+}
+
+.introduction-container div Button:hover {
+  transform: scale(1.2);
+}
+
 .chat-container {
   flex-direction: column;
 }
@@ -78,6 +100,15 @@
 }
 
 @media screen and (max-width: 768px) {
+  .introduction-container div {
+    flex-direction: column;
+  }
+
+  .introduction-container div Button {
+    width: 80vw;
+    margin-bottom: 5vh;
+  }
+
   .auth-container {
     max-width: 95%
   }
