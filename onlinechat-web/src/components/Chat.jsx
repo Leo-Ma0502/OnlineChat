@@ -1,6 +1,8 @@
 import React, { useContext, useState, useEffect } from "react";
 import { AppContext } from "../AppContextProvider";
 import { getUserlist } from "../service/api";
+import { getChatStyle } from "../styles/chatStyle";
+import { useMediaQuery } from "react-responsive";
 
 export default function Chat() {
   const { username, socketClient, messagePool } = useContext(AppContext);
@@ -8,6 +10,9 @@ export default function Chat() {
   const [messages, setMessages] = useState(JSON.parse(messagePool));
   const [userSelected, setUserSelected] = useState(null);
   const [msg, setMsg] = useState("");
+  const [isChatAreaVisible, setIsChatAreaVisible] = useState(false);
+  const [chatStyle, setChatStyle] = useState(null);
+  const isTabletOrMobile = useMediaQuery({ maxWidth: 768 });
 
   useEffect(() => {
     const fetchUserList = async () => {
@@ -31,6 +36,10 @@ export default function Chat() {
     }
     localStorage.setItem("msgs", JSON.stringify(messages));
   }, [messages, socketClient, username]);
+
+  useEffect(() => {
+    setChatStyle(getChatStyle(isChatAreaVisible, isTabletOrMobile));
+  }, [isChatAreaVisible, isTabletOrMobile]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -56,133 +65,58 @@ export default function Chat() {
     }
   };
 
-  const chatStyle = {
-    container: {
-      display: "flex",
-      flexDirection: "row",
-      justifyContent: "start",
-      alignItems: "flex-start",
-      margin: "20px",
-      fontFamily: "'Arial', sans-serif",
-      color: "#333",
-      height: "100vh",
-    },
-    userList: {
-      flex: 1,
-      border: "1px solid #ccc",
-      padding: "10px",
-      overflowY: "scroll",
-      height: "80%",
-      width: "100vw",
-      marginRight: "20px",
-      backgroundColor: "rgba(240, 240, 240, 0.8)",
-      textAlign: "left",
-    },
-    chatArea: {
-      flex: 2,
-      display: "flex",
-      flexDirection: "column",
-      justifyContent: "space-between",
-      height: "82.5%",
-      width: "100vw",
-      backgroundColor: "rgba(255, 255, 255, 0.8)",
-    },
-    messageHistory: {
-      border: "1px solid #ccc",
-      padding: "10px",
-      overflowY: "scroll",
-      flexGrow: "1",
-    },
-    form: {
-      display: "flex",
-      marginTop: "10px",
-    },
-    input: {
-      flexGrow: "1",
-      padding: "10px",
-      margin: "0 10px 0 0",
-      borderRadius: "5px",
-      border: "1px solid #ccc",
-    },
-    button: {
-      padding: "10px 20px",
-      borderRadius: "5px",
-      border: "none",
-      backgroundColor: "#1a1a1a",
-      color: "white",
-      cursor: "pointer",
-    },
-    message: {
-      padding: "5px",
-      margin: "5px 0",
-      borderRadius: "5px",
-      backgroundColor: "#f2f2f2",
-      wordWrap: "break-word",
-      whiteSpace: "pre-line",
-    },
-    sentMessage: {
-      textAlign: "right",
-      backgroundColor: "#d1f2eb",
-    },
-    receivedMessage: {
-      textAlign: "left",
-      backgroundColor: "#f2d1d1",
-    },
-    userButton: {
-      display: "block",
-      width: "100%",
-      padding: "10px",
-      margin: "5px 0",
-      backgroundColor: "rgba(50, 50, 200, 0.6)",
-      color: "white",
-      textAlign: "left",
-      border: "none",
-      borderRadius: "5px",
-      cursor: "pointer",
-    },
-    selectedButton: {
-      backgroundColor: "#4a90e2",
-      color: "white",
-      margin: "5px 0",
-    },
+  const handleCloseChatArea = () => {
+    setIsChatAreaVisible(false);
+    setUserSelected(null);
+  };
+
+  const handleUserClick = (username) => {
+    setUserSelected(username);
+    setIsChatAreaVisible(true);
   };
 
   return (
-    <div style={chatStyle.container}>
-      <div id="userlist" style={chatStyle.userList}>
-        <strong>Select a user to send message</strong>
-        {users.length !== 0 ? (
-          <ul style={{ listStyle: "none", padding: 0 }}>
-            {users
-              .filter((i) => i.username !== username)
-              .map((i, index) => (
-                <li key={index}>
-                  <button
-                    onClick={() => setUserSelected(i.username)}
-                    onDoubleClick={() => setUserSelected(null)}
-                    style={
-                      i.username === userSelected
-                        ? {
-                            ...chatStyle.userButton,
-                            ...chatStyle.selectedButton,
-                          }
-                        : chatStyle.userButton
-                    }
-                  >
-                    {i.username}
-                  </button>
-                </li>
-              ))}
-          </ul>
-        ) : (
-          "No users yet"
-        )}
-      </div>
-      <div style={chatStyle.chatArea}>
-        {userSelected && (
-          <>
+    chatStyle && (
+      <div style={chatStyle.container} id="chat-component">
+        <div id="userlist" style={chatStyle.userList}>
+          <strong>Select a user to send message</strong>
+          {users.length !== 0 ? (
+            <ul style={{ listStyle: "none", padding: 0 }}>
+              {users
+                .filter((i) => i.username !== username)
+                .map((i, index) => (
+                  <li key={index}>
+                    <button
+                      onClick={() => handleUserClick(i.username)}
+                      onDoubleClick={() => setUserSelected(null)}
+                      style={
+                        i.username === userSelected
+                          ? {
+                              ...chatStyle.userButton,
+                              ...chatStyle.selectedButton,
+                            }
+                          : chatStyle.userButton
+                      }
+                    >
+                      {i.username}
+                    </button>
+                  </li>
+                ))}
+            </ul>
+          ) : (
+            <>
+              <br />
+              No users yet ...
+            </>
+          )}
+        </div>
+        {isChatAreaVisible && (
+          <div style={chatStyle.chatArea}>
+            <strong>Messages with {userSelected}</strong>
+            <button style={chatStyle.closeButton} onClick={handleCloseChatArea}>
+              Close
+            </button>
             <div style={chatStyle.messageHistory}>
-              <strong>Messages with {userSelected}</strong>
               {messages?.length !== 0 ? (
                 messages
                   .filter(
@@ -221,9 +155,9 @@ export default function Chat() {
                 Send
               </button>
             </form>
-          </>
+          </div>
         )}
       </div>
-    </div>
+    )
   );
 }

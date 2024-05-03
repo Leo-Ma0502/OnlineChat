@@ -10,15 +10,17 @@ export default function Home() {
   if (token) {
     return (
       <div className="chat-container">
-        <strong>Loggedin as: {username}</strong>
-        <br />
-        <button
-          onClick={() => {
-            logout();
-          }}
-        >
-          Log out
-        </button>
+        <div className="chat-container-header">
+          <strong>Loggedin as: {username}</strong>
+          <br />
+          <button
+            onClick={() => {
+              logout();
+            }}
+          >
+            Log out
+          </button>
+        </div>
         <Chat></Chat>
       </div>
     );

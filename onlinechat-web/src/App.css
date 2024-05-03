@@ -5,15 +5,31 @@
 }
 
 .chat-container {
-  margin-top: 200px;
-  display: flex;
   flex-direction: column;
 }
 
-.chat-container button {
-  width: 50%;
+.chat-container-header {
+  display: flex;
+  justify-content: space-between;
+  width: 96%;
   margin: auto;
-  background-color: rgba(50, 100, 200, 0.6)
+}
+
+.chat-container-header strong {
+  text-align: center;
+  border-radius: 5px;
+  color: #fcf9f9;
+  font-weight: bold;
+  border: none;
+}
+
+.chat-container-header button {
+  text-align: center;
+  border-radius: 5px;
+  background-color: rgba(222, 49, 61, 0.946);
+  color: #fcf9f9;
+  font-weight: bold;
+  border: none;
 }
 
 .auth-container {
@@ -64,5 +80,13 @@
 @media screen and (max-width: 768px) {
   .auth-container {
     max-width: 95%
+  }
+
+  .chat-container-header {
+    flex-direction: column;
+  }
+
+  .chat-container-header button {
+    margin: auto;
   }
 }
