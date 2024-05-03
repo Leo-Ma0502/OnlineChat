@@ -4,12 +4,7 @@ import { Socket_URL } from "./service/url";
 
 // endpoint for socket client
 const protocol = window.location.protocol === "https:" ? "wss://" : "ws://";
-const ENDPOINT =
-  // window.location.host.indexOf("localhost") >= 0 ||
-  // window.location.host.indexOf("127.0.0.1") >= 0
-  // ?
-  `${protocol}${Socket_URL}`;
-// : `${protocol}${window.location.host}`;
+const ENDPOINT = `${protocol}${Socket_URL}`;
 
 export const AppContext = React.createContext();
 
